@@ -1,0 +1,169 @@
+
+OPENCV : 
+1. Reading/writing video : https://learnopencv.com/read-write-and-display-a-video-using-opencv-cpp-python/
+2. Grayscale Images : Grayscale means that the value of each pixel represents only the intensity information of the light. Such images typically display only the darkest black to the brightest white. 
+                      In other words, the image contains only black, white, and gray colors, in which gray has multiple levels.with a total of 256 grayscale levels.
+                      often use grayscale representations of an image when color is not important — this allows us to conserve memory and be more computationally efficient.
+3. Demosaicing Image : https://asktimgrey.com/2020/06/05/what-is-demosaicing/
+4. Color space : https://www.pyimagesearch.com/2021/04/28/opencv-color-spaces-cv2-cvtcolor/
+
+   RGB color space : The amount of Red, Green, and Blue contained in a single pixel. Each Red, Green, and Blue channel can have values defined in the range [0, 255] .
+                     However, this is not exactly the most friendly color space for developing computer vision based applications. In fact, it’s primary use is to display colors on a monitor.
+                     Cubical representation.
+
+   HSV color space : It attempts to depict the colors as perceived by the human eye. Hue value varies from 0-179, Saturation value varies from 0-255 and Value value varies from 0-255.
+                     It is mostly used for color segmentation purpose.The HSV color space is used heavily in computer vision applications — especially if we are interested in tracking the color of some object in an image. 
+                     It’s far, far easier to define a valid color range using HSV than it is RGB.
+                     Cylindrical Representation.
+
+                     Hue: Which “pure” color we are examining. For example, all shadows and tones of the color “red” will have the same Hue.
+                     Saturation: How “white” the color is. A fully saturated color would be “pure,” as in “pure red.” And a color with zero saturation would be pure white.
+                     Value: The Value allows us to control the lightness of our color. A Value of zero would indicate pure black, whereas increasing the value would produce lighter colors.
+
+   LAB color space : The Euclidean distance between two arbitrary colors in the L*a*b* color space has actual perceptual meaning.
+                     This is due to the distance between colors having an actual perceptual meaning, allowing us to overcome various lighting condition problems.
+                     Spherical representation.
+
+                     L-channel: The “lightness” of the pixel. This value goes up and down the vertical axis, white to black, with neutral grays at the center of the axis.
+                     a-channel: Originates from the center of the L-channel and defines pure green on one end of the spectrum and pure red on the other.
+                     b-channel: Also originates from the center of the L-channel, but is perpendicular to the a-channel. The b-channel defines pure blue at one of the spectrum and pure yellow at the other.
+5. Image Filtering : https://www.youtube.com/watch?v=C_zFhWdM4ic
+                     https://www.youtube.com/watch?v=1GUgD2SBl9A
+                     https://theailearner.com/tag/cv2-medianblur/
+                     https://ai.stanford.edu/~syyeung/cvweb/tutorial1.html
+                     - the intuition is that images typically vary slowly over space, so near pixels are likely to have similar values, and it is therefore appropriate to average them together. 
+
+                     - Image Convolution is the basis of every image filtering techniques and deep learning as well which is defined as 'shift and multiply'. 
+                     - Multiplication of a kernel with the input image and keep moving the window/filter/kernel for all over the image both horizontally as well as vertically.
+                     - The values present in the kernel determines the operation/technique that is done.
+                     Strides - Number of steps shifted to perform each kernel operation in the image
+                     Padding - technique to perform convolution operartions with corner pixels in the image by adding zeros as the additional pixel.This is helpful to retain the same shape of input to the output.
+                     There are various types of padding avaliable in OpenCV called BorderTypes.
+
+                     Mean Blur      -  This technique is performed by taking uniform average over the image which blurs the entire image.
+                     Median Blur    -  Instead of taking average after convolution , this technique takes median value and set it to the resultant image that it removes noise while keeping edges relatively sharp.
+                                       Median makes the image smoothens better. More prominant than other smoothening techniques
+                     Gaussian Blur  -  which applies weighted average, as opposed to the uniform average like a mean filter. 
+                                       Based on the distance from the center of the kernel,pixels further from center have less influence on the weighted average.
+                     Bilateral Blur -  bilateralFilter can reduce unwanted noise very well while keeping edges fairly sharp. However, it is very slow compared to most filters,which is known as edge-preserving smoothing. 
+                                       It replaces the intensity of each pixel with a weighted average of intensity values from nearby pixels.
+
+6. Edge Filtering : https://www.youtube.com/watch?v=uihBwtPIBxM
+                    https://www.analyticsvidhya.com/blog/2021/03/edge-detection-extracting-the-edges-from-an-image/
+
+                    Filters used to find the edges by using convolution kernel.
+                    
+                    Sobel     -  The Sobel Operator detects edges that are marked by sudden changes in pixel intensity.
+                                 The rise in intensity is even more evident, when we plot the first derivative of the intensity function 
+                    Scharr    -  The function calculates the Laplacian of the source image by adding up the second x and y derivatives calculated using the Sobel operator.
+                                 In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.
+                                 Positive Laplacian Operator is used to take out outward edges in an image.Negative Laplacian operator is used to take out inward edges in an image.
+                    Laplacian -  https://www.tutorialspoint.com/dip/laplacian_operator.htm                        
+
+
+7. Thresholding Images : https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_thresholding/py_thresholding.html
+                         https://learnopencv.com/opencv-threshold-python-cpp/
+                         https://learnopencv.com/otsu-thresholding-with-opencv/
+                         
+                         There are several thresholding techniques avalilable in computer vision to segment background from the foreground objects (area of interest) in the image,
+                         src(x,y) - pixel value
+                         Binary Threshold            - src(x,y) = maxval, when src(x,y) is greater than the threshold value. Else, all other sets to 0 (black).
+                         Binary Threshold Inverse    - src(x,y) = 0, when src(x,y) is greater than threshold value. Else, all other pixels sets to maxval.This process is the inverse transform of binary thresholding.
+                         Truncated Threshold         - src(x,y) = threshold_value, when src(x,y) is greater than threshold value.Else, all other pixels remains same (src(x,y))
+                         Threshold to Zero           - src(x,y) remains same when src(x,y) is greater than threshold value. Else, all other pixels sets to 0 (black).                   
+                         Threshold to Zero Inverted  - src(x,y) = 0 when src(x,y) is greater than the threshold value. Else, all the other pixels remains same (src(x,y))
+                         Threshold Otsu              - Otsu automatically calculates a threshold value from image histogram for a bimodal image. (For images which are not bimodal, binarization won’t be accurate).
+
+
+                         Global Thresholding   - In basic global thresholding we had to manually supply a threshold value, T, to segment our foreground and our background objects in the image
+                                                 There are several thresholding where the automatic thresholding is also added coz these techniques only can take one threshold value for the whole pixels of image.
+
+                         Adaptive Thresholding - The method takes small neighbors of pixels and then finds an optimal threshold value T for each neighbor. 
+                                                 This method allows us to handle cases where there may be dramatic ranges of pixel intensities and the optimal value of threshold may change for different parts of the image.
+                                                 Simple images with controlled lighting conditions,isn’t a problem for thresholding. Can take single value for threshold.
+                                                 But for situations when the lighting is non-uniform across the image, having only a single value of threshold can seriously hurt our thresholding performance.
+                                                 
+                                                 Two types of Adaptive thresholding method,
+                                                 cv2.ADAPTIVE_THRESH_MEAN_C     : threshold value is the mean of neighbourhood area.
+                                                 cv2.ADAPTIVE_THRESH_GAUSSIAN_C : threshold value is the weighted sum of neighbourhood values where weights are a gaussian window.          
+
+
+8. Morphological Operations : https://www.youtube.com/watch?v=WQK_oOWW5Zo
+                              https://www.pyimagesearch.com/2021/04/28/opencv-morphological-operations/
+                              
+                              Erosion   - The process of thinning the objects present in the image. ie,. it eats away the boundary of the object by using a kernel called Structuring element.
+                              Dilation  - Dilation thickens the object from the image. it increases the size of the object which is in the main use of text extraction from image.
+                              Opening   - Opening is the process of Erosion followed by dilation. ie. fn = dilation(erosion(image)). Used to remove small blobs inside the object
+                              Closing   - The process of Dilation followed by erosion. ie. fn = erosion(dilation(image)). 
+                              Gradient  - The gradient is the process of getting only the boundary of the objects (ie,. edges). fn = image - erosion(image)
+                              Tophat    - Tophat/white hat retains the light objects from the dark background. Used when there is sudden change in intensities to extract objects 
+                              Blackhat  - Blackhat is the opposite of dark objects from the light background.
+                              
+9. Image Pyramid: https://analyticsindiamag.com/image-blending-using-pyramids-in-opencv/                 
+                 
+                  PyrUp   - The process of upsampling the image by injecting even zero rows and columns and then convolves the result with the Gaussian Filter (blurring) ie,.multiplied by 4.
+                  PyrDown - The process of downsampling the image by first blurs the image using Gaussian Pyramid (filter) and then removes even rows and columns ie,.divide by 4            
+
+
+10. Features detection Method: i.Canny Edge Detection- https://www.youtube.com/watch?v=sRFM5IEqR2w
+                                                     https://towardsdatascience.com/canny-edge-detection-step-by-step-in-python-computer-vision-b49c3a2d8123
+  
+                                                     Used to perform edge detection efficiently than other edge filters like Sobel filter. The algorithm takes output of sobel filter as input to it and finds an optimal thinned edges
+
+                               ii. Harris Corner Detection- https://muthu.co/harris-corner-detector-implementation-in-python/
+
+                               iii. Shi-tomasi Corner Detection- https://medium.com/pixel-wise/detect-those-corners-aba0f034078b
+                                                            
+11. HoughTransform : https://www.geeksforgeeks.org/line-detection-python-opencv-houghline-method/
+                     https://www.pyimagesearch.com/2014/07/21/detecting-circles-images-using-opencv-hough-circles/
+
+
+12. Geometric Image Transformation : Interpolations - Nearest Neighbor and Bilinear - https://www.youtube.com/watch?v=AqscP7rc8_M
+                                                                                      https://www.youtube.com/watch?v=8bTDssnJyZc
+                                                      Bicubic interpolation - https://www.youtube.com/watch?v=poY_nGzEEWM
+ 
+                                     transformation techniques : https://www.youtube.com/watch?v=Gu9mSHwI3ec
+                                                                 https://opencv24-python-tutorials.readthedocs.io/en/stable/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html
+                                     Affine Transform : https://subscription.packtpub.com/book/data/9781789537147/1/ch01lvl1sec04/applying-affine-transformation
+                                     (Rotation, translation, scaling,shearing)
+
+                                     Perspective Transform : https://www.pyimagesearch.com/2014/08/25/4-point-opencv-getperspective-transform-example/
+                                                             https://medium.com/analytics-vidhya/perspective-transformation-in-python-on-live-video-bca558876e8
+
+
+
+13. Distance Transform : https://www.youtube.com/watch?v=DitXZHk2m-Q
+                         https://stackoverflow.com/questions/22563838/understanding-distance-transform-in-opencv
+                         https://homepages.inf.ed.ac.uk/rbf/HIPR2/distance.htm
+
+
+14. Histogram : https://www.pyimagesearch.com/2021/04/28/opencv-image-histograms-cv2-calchist/
+
+15. BackProjection : https://vovkos.github.io/doxyrest-showcase/opencv/sphinx_rtd_theme/page_tutorial_back_projection.html
+                     https://opencv24-python-tutorials.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_histograms/py_histogram_backprojection/py_histogram_backprojection.html
+                     https://theailearner.com/2019/04/18/histogram-backprojection/ 
+
+                     Backprojection is a color histogram technique which is used to extract features from the image that have similar color representation.
+                     The process uses color to address the classic problem of Classification and Localisation in computer vision.
+                     This addresses the localization problem i.e. where is the object in an image. In this, we calculate the histogram model of a feature and then use it to find this feature in an image. 
+
+16. Histogram Equalization : Explanation - https://www.youtube.com/watch?v=uqeOrtAzSyU
+                             https://www.youtube.com/watch?v=jWShMEhMZI4
+                             https://medium.com/@kyawsawhtoon/a-tutorial-to-histogram-equalization-497600f270e2
+        
+                             The histogram equalization is an image enhancement technique which is used to adjust the contrast of the image by histogram itself.
+                             The histogram of low contrast image looks peak in one side where the histogram equalization equally distributes the histogram using cumulative distribution function across
+                             It is the way of stretching the histogram to include all the values in the color histogram
+                             The disadvantage of histogram equalization is that the objects gets too dark or too bright in some range coz of forcely stertching the histogram values over all intensities.
+                             (boosting the contrast of the noise in the input image)
+
+                             There are two enhanced methods of histogram equalization,
+                             1. Adaptive Histogram Equalization:   
+                                                                 Adaptive histogram equalization utilizes the adaptive method to compute several histograms [for (8x8) patches of image/neighborhood], each corresponding to a distinct section of the image. 
+                                                                 Using these histograms, this technique spread the pixel intensity values of the image to improve the contrast.
+                                                                 One disadvantage of AHE is that it is more computationally complex.
+                             2. Contrast Limited Adaptive Histogram Equalization: 
+                                                                                  Contrast Limited Adaptive Histogram Equalization (CLAHE) is the advanced image Enhancement technique which is used to overcome the disadvantages of previous two methods.
+                                                                                  The histogram values gets clipped to the limit after setting adaptive method (patches across the image (8x8)). 
+                                                                                  The clip limit works on each patch by clipping the values if it exceeds .Thus makes the whole image makes optimal contrast.
+                             
